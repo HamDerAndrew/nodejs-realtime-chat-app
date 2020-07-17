@@ -25,6 +25,10 @@ io.on('connection', (socket) => {
         io.emit('sendMsg', userMessage)
     })
 
+    socket.on('shareLocation', (lat, long) => {
+        io.emit('showLocation', `https://google.com/maps?q=${lat},${long}`)
+    })
+
     // 'disconnect' is a built-in event in socket.io. This will run whenever a client gets disconnected
     socket.on('disconnect', () => {
         io.emit('eventMsg', 'User has disconnected')
