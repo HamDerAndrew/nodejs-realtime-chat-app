@@ -3,8 +3,8 @@ const socket = io();
 const form = document.getElementById('msgForm');
 const userInput = document.getElementById('userMsg');
 
-socket.on('welcomeMsg', (message) => {
-    console.log("Welcome message: ", message)
+socket.on('eventMsg', (message) => {
+    console.log(message)
 })
 
 form.addEventListener('submit', (event) => {
