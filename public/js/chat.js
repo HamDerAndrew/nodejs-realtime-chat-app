@@ -6,7 +6,15 @@ const locationBtn = document.getElementById('locationBtn');
 
 form.addEventListener('submit', (event) => {
     event.preventDefault();
-    socket.emit('sendMsg', userInput.value)
+    // whenever you emit an event and want to use "Acknowledgement", you pass a function as the last argument in 'emit'.
+    // Whoever is emiting the event, sets up a callback function. Whoever receives the event receives a callback function that it needs to call.
+    // In this case we emit this event to the server. The server calls the callback function in the 'sendMsg' event.
+    socket.emit('sendMsg', userInput.value, (badWordError) => {
+        if (badWordError) {
+            return console.log(badWordError)
+        }
+        console.log('Message was delivered successfully')
+    })
 })
 
 locationBtn.addEventListener('click', (event) => {
@@ -19,7 +27,9 @@ locationBtn.addEventListener('click', (event) => {
     navigator.geolocation.getCurrentPosition( (location) => {
         const { latitude = {}, longitude = {} } = location.coords
         console.log("latitude: " + latitude + "\n" + "longitide: " + longitude)
-        socket.emit('shareLocation', latitude, longitude)
+        socket.emit('shareLocation', latitude, longitude, () => {
+            console.log("Location shared")
+        })
     });
 })
 

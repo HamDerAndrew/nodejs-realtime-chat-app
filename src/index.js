@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path')
 const http = require('http');
 const socketio = require('socket.io');
+const Filter = require('bad-words');
 
 const app = express();
 
@@ -20,13 +21,22 @@ io.on('connection', (socket) => {
     socket.emit('eventMsg', message)
     socket.broadcast.emit('eventMsg', 'New user has joined in!')
 
-    socket.on('sendMsg', (userMessage) => {
+    socket.on('sendMsg', (userMessage, callback) => {
+        const filter = new Filter()
+
+        // Check for profanity aka "bad words" :D
+        if (filter.isProfane(userMessage)) {
+            return callback("Seems like you used a naughty word. Shame on you")
+        }
         // emit userMessage to all connected clients
         io.emit('sendMsg', userMessage)
+        // callback received as an "Acknowledgement" from the client 'chat.js'. Arguments passed can be accessed on the client
+        callback()
     })
 
-    socket.on('shareLocation', (lat, long) => {
+    socket.on('shareLocation', (lat, long, callback) => {
         io.emit('showLocation', `https://google.com/maps?q=${lat},${long}`)
+        callback()
     })
 
     // 'disconnect' is a built-in event in socket.io. This will run whenever a client gets disconnected
