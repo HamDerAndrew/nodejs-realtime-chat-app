@@ -2,30 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Realtime Chatapp</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <h1>Realtime Chat app</h1>
-    <div id="messages">
+    <div class="chat">
+        <div class="chat__sidebar">
 
+        </div>
+        <div class="chat__main">
+            <div id="messages" class="chat__messages"></div>
+            <div class="compose">
+                <form id="msgForm">
+                    <label>Type in a message</label>
+                    <input type="text" name="msgInput" id="userMsg">
+                    <button type="submit" id="submitMsg">Send</button>
+                </form>
+                <button id="locationBtn"> Share location</button>
+            </div>
+        </div>
     </div>
-    <form id="msgForm">
-        <label>Type in a message</label>
-        <input type="text" name="msgInput" id="userMsg">
-        <button type="submit" id="submitMsg">Send</button>
-    </form>
-    <button id="locationBtn"> Share location</button>
+    <h1>Realtime Chat app</h1>
 
     <script id="message-template" type="text/html">
-        <div>
+        <div class="message">
+            <p>
+                <span class="message__name">Username</span>
+                <span class="message__meta">{{ createdAt }}</span>
+            </p>
             <p>{{ message }}</p>
         </div>
     </script>
 
     <script id="link-template" type="text/html">
-        <div>
-            <a href={{link}} target="_blank">This is my current position</a>
+        <div class="message">
+            <p>
+                <span class="message__name">Username</span>
+                <span class="message__meta">{{ createdAt }}</span>
+            </p>
+            <p><a href={{link}} target="_blank">This is my current position</a></p>
         </div>
     </script>
 

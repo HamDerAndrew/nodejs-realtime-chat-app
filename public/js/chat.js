@@ -48,7 +48,8 @@ locationBtn.addEventListener('click', (event) => {
 socket.on('eventMsg', (message) => {
     // Provide data to Mustache for it to render, in the second argument, which is an object
     const html = Mustache.render(msgTemplate, {
-        message
+        message: message.text,
+        createdAt: moment(message.createdAt).format("ddd, HH:mm - GGGG")
     })
     msgContainer.insertAdjacentHTML('beforeend', html)
     console.log(message)
@@ -56,7 +57,8 @@ socket.on('eventMsg', (message) => {
 
 socket.on('showLocation', (location) => {
     const html = Mustache.render(locationTemplate, {
-        link: location
+        link: location.url,
+        createdAt: moment(location.createdAt).format("ddd, HH:mm - GGGG")
     })
     msgContainer.insertAdjacentHTML('beforeend', html)
     console.log(location)

@@ -3,6 +3,7 @@ const path = require('path')
 const http = require('http');
 const socketio = require('socket.io');
 const Filter = require('bad-words');
+const { createMsg, createLocationMsg } = require('./utils/messages');
 
 const app = express();
 
@@ -16,11 +17,9 @@ const port = process.env.PORT || 3000;
 const publicPath = path.join(__dirname, '../public')
 
 io.on('connection', (socket) => {
-    const message = 'Welcome good Sir / Madam'
     console.log("Connection established")
-    socket.emit('eventMsg', message)
-    socket.broadcast.emit('eventMsg', 'New user has joined in!')
-
+    socket.emit('eventMsg', createMsg('Welcome my friend'))
+    socket.broadcast.emit('eventMsg', createMsg('New user has joined in!'))
     socket.on('sendMsg', (userMessage, callback) => {
         const filter = new Filter()
 
@@ -29,19 +28,19 @@ io.on('connection', (socket) => {
             return callback("Seems like you used a naughty word. Shame on you")
         }
         // emit userMessage to all connected clients
-        io.emit('eventMsg', userMessage)
+        io.emit('eventMsg', createMsg(userMessage))
         // callback received as an "Acknowledgement" from the client 'chat.js'. Arguments passed can be accessed on the client
         callback()
     })
 
     socket.on('shareLocation', (lat, long, callback) => {
-        io.emit('showLocation', `https://google.com/maps?q=${lat},${long}`)
+        io.emit('showLocation', createLocationMsg(`https://google.com/maps?q=${lat},${long}`))
         callback()
     })
 
     // 'disconnect' is a built-in event in socket.io. This will run whenever a client gets disconnected
     socket.on('disconnect', () => {
-        io.emit('eventMsg', 'User has disconnected')
+        io.emit('eventMsg', createMsg('User has disconnected'))
     })
 })
 
