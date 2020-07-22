@@ -4,6 +4,11 @@ const form = document.getElementById('msgForm');
 const userInput = document.getElementById('userMsg');
 const submitMsg = document.getElementById('submitMsg');
 const locationBtn = document.getElementById('locationBtn');
+const msgContainer = document.getElementById('messages');
+
+// Templates
+const msgTemplate = document.getElementById('message-template').innerHTML;
+const locationTemplate = document.getElementById('link-template').innerHTML;
 
 form.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -34,20 +39,25 @@ locationBtn.addEventListener('click', (event) => {
         const { latitude = {}, longitude = {} } = location.coords
         socket.emit('shareLocation', latitude, longitude, () => {
             locationBtn.removeAttribute('disabled')
-            console.log("Location shared")
+            //console.log("Location shared")
         })
-        console.log("latitude: " + latitude + "\n" + "longitide: " + longitude)
+        // console.log("latitude: " + latitude + "\n" + "longitude: " + longitude)
     });
 })
 
 socket.on('eventMsg', (message) => {
+    // Provide data to Mustache for it to render, in the second argument, which is an object
+    const html = Mustache.render(msgTemplate, {
+        message
+    })
+    msgContainer.insertAdjacentHTML('beforeend', html)
     console.log(message)
 })
 
-socket.on('sendMsg', (message) => {
-    console.log(message)
-})
-
-socket.on('showLocation', (message) => {
-    console.log(message)
+socket.on('showLocation', (location) => {
+    const html = Mustache.render(locationTemplate, {
+        link: location
+    })
+    msgContainer.insertAdjacentHTML('beforeend', html)
+    console.log(location)
 })

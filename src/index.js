@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
             return callback("Seems like you used a naughty word. Shame on you")
         }
         // emit userMessage to all connected clients
-        io.emit('sendMsg', userMessage)
+        io.emit('eventMsg', userMessage)
         // callback received as an "Acknowledgement" from the client 'chat.js'. Arguments passed can be accessed on the client
         callback()
     })
