@@ -18,8 +18,12 @@ const publicPath = path.join(__dirname, '../public')
 
 io.on('connection', (socket) => {
     console.log("Connection established")
-    socket.emit('eventMsg', createMsg('Welcome my friend'))
-    socket.broadcast.emit('eventMsg', createMsg('New user has joined in!'))
+    socket.on('joinRoom', ({ username, room }) => {
+        console.log(username, room)
+        socket.join(room)
+        socket.emit('eventMsg', createMsg('Welcome my friend'))
+        socket.broadcast.to(room).emit('eventMsg', createMsg(`${username} has joined in!`))
+    })
     socket.on('sendMsg', (userMessage, callback) => {
         const filter = new Filter()
 
@@ -28,6 +32,7 @@ io.on('connection', (socket) => {
             return callback("Seems like you used a naughty word. Shame on you")
         }
         // emit userMessage to all connected clients
+        // io.emit('eventMsg', createMsg(userMessage))
         io.emit('eventMsg', createMsg(userMessage))
         // callback received as an "Acknowledgement" from the client 'chat.js'. Arguments passed can be accessed on the client
         callback()

@@ -10,6 +10,10 @@ const msgContainer = document.getElementById('messages');
 const msgTemplate = document.getElementById('message-template').innerHTML;
 const locationTemplate = document.getElementById('link-template').innerHTML;
 
+// Options
+// Use QueryString to put the query string into an object. For example: 'username' from query will be will be {username: 'nameofuserinquery'}
+const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true})
+
 form.addEventListener('submit', (event) => {
     event.preventDefault();
     submitMsg.setAttribute('disabled', 'disabled')
@@ -52,7 +56,6 @@ socket.on('eventMsg', (message) => {
         createdAt: moment(message.createdAt).format("ddd, HH:mm - GGGG")
     })
     msgContainer.insertAdjacentHTML('beforeend', html)
-    console.log(message)
 })
 
 socket.on('showLocation', (location) => {
@@ -61,5 +64,6 @@ socket.on('showLocation', (location) => {
         createdAt: moment(location.createdAt).format("ddd, HH:mm - GGGG")
     })
     msgContainer.insertAdjacentHTML('beforeend', html)
-    console.log(location)
 })
+
+socket.emit('joinRoom', {username, room})
