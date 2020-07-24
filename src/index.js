@@ -26,28 +26,31 @@ io.on('connection', (socket) => {
         if (error) return callback(error)
 
         socket.join(user.room)
-        socket.emit('eventMsg', createMsg('Welcome my friend'))
-        socket.broadcast.to(user.room).emit('eventMsg', createMsg(`${user.username} has joined in!`))
+        socket.emit('eventMsg', createMsg('Admin', `Welcome ${user.username}`))
+        socket.broadcast.to(user.room).emit('eventMsg', createMsg('Amin', `${user.username} has joined in!`))
 
         // Let the client know they joined a room by calling the callback
         callback()
     })
+
     socket.on('sendMsg', (userMessage, callback) => {
         const filter = new Filter()
+        const user = getUser(socket.id)
 
         // Check for profanity aka "bad words" :D
         if (filter.isProfane(userMessage)) {
-            return callback("Seems like you used a naughty word. Shame on you")
+            return callback("Admin: Seems like you used a naughty word. Shame on you")
         }
         // emit userMessage to all connected clients
         // io.emit('eventMsg', createMsg(userMessage))
-        io.emit('eventMsg', createMsg(userMessage))
+        io.to(user.room).emit('eventMsg', createMsg(user.username, userMessage))
         // callback received as an "Acknowledgement" from the client 'chat.js'. Arguments passed can be accessed on the client
         callback()
     })
 
     socket.on('shareLocation', (lat, long, callback) => {
-        io.emit('showLocation', createLocationMsg(`https://google.com/maps?q=${lat},${long}`))
+        const user = getUser(socket.id)
+        io.to(user.room).emit('showLocation', createLocationMsg(user.username, `https://google.com/maps?q=${lat},${long}`))
         callback()
     })
 
@@ -56,7 +59,7 @@ io.on('connection', (socket) => {
         const user = removeUser(socket.id)
 
         if (user) {
-            io.emit('eventMsg', createMsg(`${user.username} has left the "${user.room}" room`))
+            io.to(user.room).emit('eventMsg', createMsg('Admin', `${user.username} has left the "${user.room}" room`))
         }
     })
 })

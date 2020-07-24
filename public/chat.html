@@ -17,7 +17,7 @@
             <div class="compose">
                 <form id="msgForm">
                     <label>Type in a message</label>
-                    <input type="text" name="msgInput" id="userMsg">
+                    <input type="text" name="msgInput" id="userMsg" required autocomplete="off">
                     <button type="submit" id="submitMsg">Send</button>
                 </form>
                 <button id="locationBtn"> Share location</button>
@@ -29,7 +29,7 @@
     <script id="message-template" type="text/html">
         <div class="message">
             <p>
-                <span class="message__name">Username</span>
+                <span class="message__name">{{ username }}</span>
                 <span class="message__meta">{{ createdAt }}</span>
             </p>
             <p>{{ message }}</p>
@@ -39,7 +39,7 @@
     <script id="link-template" type="text/html">
         <div class="message">
             <p>
-                <span class="message__name">Username</span>
+                <span class="message__name">{{ username }}</span>
                 <span class="message__meta">{{ createdAt }}</span>
             </p>
             <p><a href={{link}} target="_blank">This is my current position</a></p>
