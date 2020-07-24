@@ -66,4 +66,9 @@ socket.on('showLocation', (location) => {
     msgContainer.insertAdjacentHTML('beforeend', html)
 })
 
-socket.emit('joinRoom', {username, room})
+socket.emit('joinRoom', { username, room }, (error) => {
+    if (error) {
+        alert(error)
+        location.href="/"
+    }
+})

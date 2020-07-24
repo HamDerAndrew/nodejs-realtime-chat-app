@@ -4,6 +4,7 @@ const http = require('http');
 const socketio = require('socket.io');
 const Filter = require('bad-words');
 const { createMsg, createLocationMsg } = require('./utils/messages');
+const { addUser, getUser, removeUser, getUsersInRoom} = require('./utils/users');
 
 const app = express();
 
@@ -18,11 +19,18 @@ const publicPath = path.join(__dirname, '../public')
 
 io.on('connection', (socket) => {
     console.log("Connection established")
-    socket.on('joinRoom', ({ username, room }) => {
-        console.log(username, room)
-        socket.join(room)
+    socket.on('joinRoom', ({ username, room }, callback) => {
+        // 'socket.id' is the id provided by the 'socket' object from 'io.on(socket)'
+        const { error, user } = addUser(socket.id, username, room)
+
+        if (error) return callback(error)
+
+        socket.join(user.room)
         socket.emit('eventMsg', createMsg('Welcome my friend'))
-        socket.broadcast.to(room).emit('eventMsg', createMsg(`${username} has joined in!`))
+        socket.broadcast.to(user.room).emit('eventMsg', createMsg(`${user.username} has joined in!`))
+
+        // Let the client know they joined a room by calling the callback
+        callback()
     })
     socket.on('sendMsg', (userMessage, callback) => {
         const filter = new Filter()
@@ -45,7 +53,11 @@ io.on('connection', (socket) => {
 
     // 'disconnect' is a built-in event in socket.io. This will run whenever a client gets disconnected
     socket.on('disconnect', () => {
-        io.emit('eventMsg', createMsg('User has disconnected'))
+        const user = removeUser(socket.id)
+
+        if (user) {
+            io.emit('eventMsg', createMsg(`${user.username} has left the "${user.room}" room`))
+        }
     })
 })
 
