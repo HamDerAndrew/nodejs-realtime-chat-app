@@ -5,10 +5,38 @@ const userInput = document.getElementById('userMsg');
 const submitMsg = document.getElementById('submitMsg');
 const locationBtn = document.getElementById('locationBtn');
 const msgContainer = document.getElementById('messages');
+const sidebar = document.getElementById('sidebar');
 
 // Templates
 const msgTemplate = document.getElementById('message-template').innerHTML;
 const locationTemplate = document.getElementById('link-template').innerHTML;
+const sidebarTemplate = document.getElementById('sidebar-template').innerHTML;
+
+const autoscroll = () => {
+    // new message element
+    const newMsg = msgContainer.lastElementChild
+
+    // get the height of the last message new message
+    const newMsgStyles = getComputedStyle(newMsg)
+    const newMsgMargin = parseInt(newMsgStyles.marginBottom)
+    // add bottom margin to the height of the new last message
+    const newMsgHeight = newMsg.offsetHeight + newMsgMargin
+
+    // get visible height
+    const visibleHeight = msgContainer.offsetHeight
+
+    // get height of messages container ('scrollHeight' returns the total height we are able to scroll through)
+    const containerHeight = msgContainer.scrollHeight
+
+    // How far have I scrolled from the top?
+    const scrollOffset = msgContainer.scrollTop + visibleHeight
+
+    // Check that we were at the bottom before the last new message was added
+    if (containerHeight - newMsgHeight <= scrollOffset) {
+        // set value for how far down we are scrolled, which here, is all the way down
+        msgContainer.scrollTop = msgContainer.scrollHeight
+    }
+}
 
 // Options
 // Use QueryString to put the query string into an object. For example: 'username' from query will be will be {username: 'nameofuserinquery'}
@@ -43,7 +71,6 @@ locationBtn.addEventListener('click', (event) => {
         const { latitude = {}, longitude = {} } = location.coords
         socket.emit('shareLocation', latitude, longitude, () => {
             locationBtn.removeAttribute('disabled')
-            //console.log("Location shared")
         })
         // console.log("latitude: " + latitude + "\n" + "longitude: " + longitude)
     });
@@ -57,6 +84,7 @@ socket.on('eventMsg', (message) => {
         createdAt: moment(message.createdAt).format("ddd, HH:mm - GGGG")
     })
     msgContainer.insertAdjacentHTML('beforeend', html)
+    autoscroll()
 })
 
 socket.on('showLocation', (location) => {
@@ -66,6 +94,15 @@ socket.on('showLocation', (location) => {
         createdAt: moment(location.createdAt).format("ddd, HH:mm - GGGG")
     })
     msgContainer.insertAdjacentHTML('beforeend', html)
+    autoscroll()
+})
+
+socket.on('roomInfo', ({ room, users }) => {
+    const html = Mustache.render(sidebarTemplate, {
+        room,
+        users
+    })
+    sidebar.innerHTML = html
 })
 
 socket.emit('joinRoom', { username, room }, (error) => {

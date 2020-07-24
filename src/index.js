@@ -27,7 +27,11 @@ io.on('connection', (socket) => {
 
         socket.join(user.room)
         socket.emit('eventMsg', createMsg('Admin', `Welcome ${user.username}`))
-        socket.broadcast.to(user.room).emit('eventMsg', createMsg('Amin', `${user.username} has joined in!`))
+        socket.broadcast.to(user.room).emit('eventMsg', createMsg('Admin', `${user.username} has joined in!`))
+        io.to(user.room).emit('roomInfo', {
+            room: user.room,
+            users: getUsersInRoom(user.room)
+        })
 
         // Let the client know they joined a room by calling the callback
         callback()
@@ -60,6 +64,10 @@ io.on('connection', (socket) => {
 
         if (user) {
             io.to(user.room).emit('eventMsg', createMsg('Admin', `${user.username} has left the "${user.room}" room`))
+            io.to(user.room).emit('roomInfo', {
+                room: user.room,
+                users: getUsersInRoom(user.room)
+            })
         }
     })
 })
