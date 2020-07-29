@@ -73,7 +73,6 @@ locationBtn.addEventListener('click', (event) => {
         socket.emit('shareLocation', latitude, longitude, () => {
             locationBtn.removeAttribute('disabled')
         })
-        // console.log("latitude: " + latitude + "\n" + "longitude: " + longitude)
     });
 })
 
