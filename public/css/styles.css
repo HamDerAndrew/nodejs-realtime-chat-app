@@ -164,6 +164,25 @@ button:disabled {
 
 /* Chat Sidebar Styles */
 
+#sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar-bottom {
+    padding-left: 24px;
+    padding-bottom: 21px;
+}
+
+#leave__btn {
+    background-color: #e36f83;
+}
+
+#leave__btn:hover {
+    background-color: #b85768;
+}
+
 .room-title {
     font-weight: 400;
     font-size: 22px;

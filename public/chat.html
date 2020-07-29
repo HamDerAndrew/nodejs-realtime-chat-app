@@ -46,14 +46,19 @@
     </script>
 
     <script id="sidebar-template" type="text/html">
-        <h2 class="room-title">Room: {{ room }}</h2>
-        <h3 class="list-title">Users</h3>
-        <ul class="users">
-            <!-- Open and close the array of users we get access to-->
-            {{#users}}
-                <li>{{ username }}</li>
-            {{/users}}
-        </ul>
+        <div class="sidebar-container">
+            <h2 class="room-title">Room: {{ room }}</h2>
+            <h3 class="list-title">Users</h3>
+            <ul class="users">
+                <!-- Open and close the array of users we get access to-->
+                {{#users}}
+                    <li>{{ username }}</li>
+                {{/users}}
+            </ul>
+        </div>
+        <div class="sidebar-bottom">
+            <button id="leave__btn">Leave room</button>
+        </div>
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>

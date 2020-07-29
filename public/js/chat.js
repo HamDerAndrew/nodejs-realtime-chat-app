@@ -7,6 +7,7 @@ const locationBtn = document.getElementById('locationBtn');
 const msgContainer = document.getElementById('messages');
 const sidebar = document.getElementById('sidebar');
 
+
 // Templates
 const msgTemplate = document.getElementById('message-template').innerHTML;
 const locationTemplate = document.getElementById('link-template').innerHTML;
@@ -103,6 +104,12 @@ socket.on('roomInfo', ({ room, users }) => {
         users
     })
     sidebar.innerHTML = html
+    
+    // Grab button here because it isn't rendered before Mustache has rendered the template
+    const myLin = document.getElementById('leave__btn');
+    myLin.addEventListener('click', () => {
+        location.href="/"
+    })
 })
 
 socket.emit('joinRoom', { username, room }, (error) => {
@@ -111,3 +118,4 @@ socket.emit('joinRoom', { username, room }, (error) => {
         location.href="/"
     }
 })
+
