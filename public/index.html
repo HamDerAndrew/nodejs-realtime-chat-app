@@ -9,16 +9,38 @@
 </head>
 <body>
     <div class="centered-form">
-        <div class="centered-form__box">
-            <h1>Join</h1>
-            <form action="/chat.html">
-                <label for="display name">Display name</label>
-                <input type="text" name="username" placeholder="Display name" required>
-                <label for="room">Room</label>
-                <input type="text" name="room" placeholder="Room" required>
-                <button>Join room</button>
-            </form>
+
+        <div id="info">
+            <div class="info-box">
+                <h1>Welcome to Chat App</h1>
+                <p>This is an application where you can join any room you want. Think
+                    of it like mIRC from back in the day. If the name of the room you enter
+                    does not already exist, the room is created and you enter it. Others can
+                    then join you. Happy chatting!
+                </p>
+            </div>
+            <div class="circle-container">
+                <div class="circle-outer">
+                    <div class="circle-inner">
+                        <p>A</p>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <div id="join">
+            <div class="centered-form__box">
+                <h1>Join</h1>
+                <form action="/chat.html" id="join-form">
+                    <label for="display name">Display name</label>
+                    <input type="text" name="username" placeholder="Display name" required>
+                    <label for="room">Room</label>
+                    <input type="text" name="room" placeholder="Room" required>
+                    <button>Join room</button>
+                </form>
+            </div>
+        </div>
+
     </div>
 </body>
 </html>

@@ -58,20 +58,87 @@ button:disabled {
 
 /* Join Page Styles */
 
-.centered-form {
-    background: #333744;
-    width: 100vw;
-    height: 100vh;   
+#join {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 65%;
+}
+
+#join-form input {
+    border: 1px solid #ccc8c8;
+    border-radius: 13px;
+}
+
+#join-form button {
+    border-radius: 13px;
+}
+
+#info {
+    background-color: #04509E;
+    color: #aed0e3;
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.info-box {
+    padding-left: 50px;
+    width: 80%;
+}
+
+.circle-container {
+    align-self: flex-end;
+}
+
+.circle-outer {
+    /* float: right; */
+    margin-right: -59px;
+    margin-top: -59px;
+    background-color: white;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.circle-inner {
+    background-color: #04509E;
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle-inner p {
+    font-size: 22px;
+}
+
+.centered-form {
+    /* background:#6a77a1;
+    width: 100vw;
+    height: 100vh;   
+    display: flex;
+    justify-content: center;
+    align-items: center; */
+    background:#FFFFFF;
+    display: flex;
+    width: 100vw;
+    height: 100vh;  
+}
+
 .centered-form__box {
-    box-shadow: 0px 0px 17px 1px #1D1F26;
+    /* box-shadow: 0px 0px 17px 1px #1D1F26; */
     background: #F7F7FA;
     padding: 24px;
-    width: 250px;
+    width: 450px;
+    border-radius: 4px;
 }
 
 .centered-form button {
