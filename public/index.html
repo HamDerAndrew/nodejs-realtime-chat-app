@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <link rel="icon" href="favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" description="Realtime Chat App. This is an application where you can join any room you want. Think of it like mIRC from back in the day. If the name of the room you enter does not already exist, the room is created and you enter it. Others can then join you. Happy chatting!">
+    <meta name="twitter:title" content="Realtime Chat App">
+    <meta name="twitter:description" content="Use this app to join a chatroom of your own choosing and start chatting with friends or strangers!">
+    <meta property="og:type" content="website">
+    <meta data-react-helmet="true" property="og:title" content="Realtime Chat App">
+    <meta data-react-helmet="true" property="og:description" content="Use this app to join a chatroom of your own choosing and start chatting with friends or strangers!">
     <title>Realtime Chatapp</title>
     <link rel="stylesheet" href="css/styles.min.css">
 </head>
@@ -32,10 +38,10 @@
             <div class="centered-form__box">
                 <h1>Join</h1>
                 <form action="/chat.html" id="join-form">
-                    <label for="display name">Display name</label>
-                    <input type="text" name="username" placeholder="Display name" required>
+                    <label for="display-name">Display name</label>
+                    <input type="text" id="display-name" name="username" placeholder="Display name" required>
                     <label for="room">Room</label>
-                    <input type="text" name="room" placeholder="Room" required>
+                    <input type="text" id="room" name="room" placeholder="Room" required>
                     <button>Join room</button>
                 </form>
             </div>
